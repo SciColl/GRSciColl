@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+        <title>GRSciColl table</title>
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+        <style>
+        	body {
+        		background-color: #163e4f;
+        	}
+        	.error_message {
+        		padding: 3rem 1.5rem;
+        		margin: 5rem;
+  				background-color: white;
+  				font-family: 'Raleway', sans-serif;
+        	}
+
+            td.details-control {
+                background: url('resources/details_open.png') no-repeat center center;
+                cursor: pointer;
+            }
+            tr.shown td.details-control {
+                background: url('resources/details_close.png') no-repeat center center;
+            }
+
+    	</style>
+        
+    </head>
+    <body>
+    	<main role="main" class="container">
+    		<div class="error_message">
+                <p>This is just a demo to show an intermediate table representation
+                of GRSciColl data, while GBIF is preparing a full database-backed system.
+                </p>
+
+    		
+            <table id="myTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Code</th>
+                        <th>Institution Name</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+            </table>
+            </div>
+    	</main>
+
+        <script
+          src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+        <script type='text/javascript'>
+        var table = $('#myTable').DataTable( {
+            ajax: {
+                url: 'grscicoll_records.json',
+                dataSrc: ''
+            },
+            columns: [
+                {
+                    "className":      'details-control',
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                { data: 'inst_code' },
+                { data: 'inst_name' },
+                { data: 'city'},
+                { data: 'country' },
+                { 
+                 data: 'filename',
+                 "orderable": false,
+                 render: function(data, type, row, meta){
+                    if(type === 'display'){
+                        data = '<a href="https://github.com/SciColl/GRSciColl/blob/master/individual_records/' + data + '" target="_blank">Edit</a>';
+                    }
+                    
+                    return data;
+                 }
+      } 
+            ]
+        } );
+        // Add event listener for opening and closing details
+        $('#myTable tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+     
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
+        /* Formatting function for row details - modify as you need */
+        function format ( d ) {
+            // `d` is the original data object for the row
+            return d.cool_uri;
+        }
+        </script>
+
+    </body>
+</html>    
