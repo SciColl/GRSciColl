@@ -38,6 +38,7 @@
                 <p>This is just a demo to show an intermediate table representation
                 of GRSciColl data, while GBIF is preparing a full database-backed system.
                 </p>
+                <p>Source code can be found at <a href='https://github.com/SciColl/GRSciColl/tree/master' target='_blank'>https://github.com/SciColl/GRSciColl/tree/master</a>.</p>
 
     		
             <table id="myTable" class="display" style="width:100%">
@@ -110,7 +111,7 @@
         /* Formatting function for row details - modify as you need */
         function format ( d ) {
             // `d` is the original data object for the row
-            return d.cool_uri;
+            return 'Cool URI: ' + d.cool_uri + '<br/>...and we can add all of the other fields here as well';
         }
         </script>
 
